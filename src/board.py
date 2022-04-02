@@ -5,7 +5,7 @@ from PIL import Image
 
 from color import get_matching_color, Color
 
-BOARD_SIZE_X = 1000
+BOARD_SIZE_X = 2000
 BOARD_SIZE_Y = 1000
 
 class Board:
@@ -51,6 +51,6 @@ class Board:
                 print("Couldn't determine color for pixel at " + str(target_pixel["x"]) + ", " + str(target_pixel["y"]))
                 continue
 
-            if currentColor.value["id"] != target_pixel["color_index"]:
+            if currentColor is None or currentColor.value["id"] != target_pixel["color_index"]:
                 mismatched_pixels.append(target_pixel)
         return mismatched_pixels
