@@ -23,8 +23,8 @@ transparent_pixels = 0
 
 print("Image size: " + str(image.size))
 
-for y in range(image.height):
-    for x in range(image.width):
+for x in range(image.width):
+    for y in range(image.height):
         rgba = image_data[x, y]
 
         print(x, y, rgba)

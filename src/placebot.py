@@ -1,6 +1,8 @@
 import random
 import time
 
+from PIL import UnidentifiedImageError
+
 from placer import Placer
 from local_configuration import local_configuration
 from target_configuration import target_configuration
@@ -46,7 +48,14 @@ while True:
 
         print("Attempting to place for: " + placer.username)
 
-        placer.update_board()
+        try:
+            placer.update_board()
+        except UnidentifiedImageError:
+            print("Unidentified image for: " + placer.username)
+            print("ABORTING!!!!!!!!!!!!")
+            print("ABORTING!!!!!!!!!!!!")
+            print("ABORTING!!!!!!!!!!!!")
+            continue
 
         mismatched_pixels = placer.board.get_mismatched_pixels(target_configuration.get_config()["pixels"])
         targetPixel = placer.board.get_mismatched_pixel(target_configuration.get_config()["pixels"])
