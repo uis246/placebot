@@ -48,7 +48,7 @@ while True:
 
         placer.update_board()
 
-        mismatched_pixels = placer.board.get_mismatched_pixel(target_configuration.get_config()["pixels"])
+        mismatched_pixels = placer.board.get_mismatched_pixels(target_configuration.get_config()["pixels"])
         targetPixel = placer.board.get_mismatched_pixel(target_configuration.get_config()["pixels"])
 
         if targetPixel is None:
