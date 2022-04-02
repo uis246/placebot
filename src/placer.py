@@ -1,3 +1,4 @@
+import math
 import sys
 from enum import Enum
 import time
@@ -110,6 +111,10 @@ class Placer:
         self.logged_in = True
 
     def place_tile(self, x: int, y: int, color: Color):
+
+        canvas_id = math.floor(x / 1000)
+        x = x % 1000
+
         self.last_placed = time.time()
 
         headers = self.INITIAL_HEADERS.copy()
@@ -123,7 +128,7 @@ class Placer:
             "authorization": "Bearer " + self.token
         })
 
-        print("Placing tile at " + str(x) + ", " + str(y) + " with color " + str(color))
+        print("Placing tile at " + str(x) + ", " + str(y) + " with color " + str(color) + " on canvas " + str(canvas_id))
         r = requests.post(
             "https://gql-realtime-2.reddit.com/query",
             json={
@@ -132,7 +137,7 @@ class Placer:
                 "variables": {
                     "input": {
                         "PixelMessageData": {
-                            "canvasIndex": 0,
+                            "canvasIndex": canvas_id,
                             "colorIndex": color.value["id"],
                             "coordinate": {
                                 "x": x,
@@ -153,6 +158,10 @@ class Placer:
             print("Placed tile")
 
     def update_board(self):
+        self.update_canvas(0)
+        self.update_canvas(1)
+
+    def update_canvas(self, canvas_id):
         print("Getting board")
         ws = create_connection("wss://gql-realtime-2.reddit.com/query")
         ws.send(
@@ -197,7 +206,7 @@ class Placer:
                                 "channel": {
                                     "teamOwner": "AFD2022",
                                     "category": "CANVAS",
-                                    "tag": "0",
+                                    "tag": str(canvas_id),
                                 }
                             }
                         },
@@ -216,11 +225,16 @@ class Placer:
                 msg = temp["payload"]["data"]["subscribe"]
                 if msg["data"]["__typename"] == "FullFrameMessageData":
                     file = msg["data"]["name"]
+
+                    if canvas_id == 0:
+                        boardimg = BytesIO(requests.get(file, stream=True).content)
+                        print("Got image ", canvas_id, ":", file)
+                        self.board.update_image(boardimg, 0, 0)
+                    elif canvas_id == 1:
+                        boardimg = BytesIO(requests.get(file, stream=True).content)
+                        print("Got image ", canvas_id, ":", file)
+                        self.board.update_image(boardimg, 1000, 0)
+
                     break
 
         ws.close()
-
-        boardimg = BytesIO(requests.get(file, stream=True).content)
-        print("Got image:", file)
-
-        self.board.update_image(boardimg)

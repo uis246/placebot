@@ -12,21 +12,25 @@ class Board:
 
     def __init__(self):
         self.last_update = 0
-        self.colors = None
-
-    def update_image(self, raw_image):
-        self.last_update = time.time()
-
-        image = Image.open(raw_image).convert("RGB").load()
-
         self.colors = []
 
-        # convert to color indices
         for x in range(BOARD_SIZE_X):
             column = []
             for y in range(BOARD_SIZE_Y):
-                column.append(get_matching_color(image[x, y]))
+                column.append(Color.WHITE)
             self.colors.append(column)
+
+
+    def update_image(self, raw_image, offset_x, offset_y):
+        self.last_update = time.time()
+
+        image = Image.open(raw_image)
+        image_data = image.convert("RGB").load()
+
+        # convert to color indices
+        for x in range(image.width):
+            for y in range(image.height):
+                self.colors[x][y]= get_matching_color(image_data[x, y])
 
         print("Board updated.")
     
