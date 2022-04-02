@@ -8,6 +8,8 @@ from local_configuration import local_configuration
 from target_configuration import target_configuration
 from color import get_color_from_index, Color
 
+
+# TESTING CODE - TODO: add config option
 # placer = Placer()
 # placer.login(local_configuration["accounts"][2]["username"], local_configuration["accounts"][2]["password"])
 # placer.update_board()
@@ -78,7 +80,7 @@ while True:
     print("ETA:   ", ",  ".join([p.username + " - " + str(round(p.last_placed + PLACE_INTERVAL + 15 - time.time())) + " s" for p in placers]))
 
     if wasCompleted and lastMismatchCount < SLEEP_MISMATCH_THRESHOLD:
-        print("Less than " + str(SLEEP_MISMATCH_THRESHOLD) + " mismatched pixels found, going to sleep, good night")
+        print("\nLess than " + str(SLEEP_MISMATCH_THRESHOLD) + " mismatched pixels found, going to sleep, good night")
         time.sleep(90)
 
     time.sleep(30)
