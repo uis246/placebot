@@ -1,10 +1,43 @@
-from Placer import Placer, Color
+import random
+import time
 
-username = "KirellaGamma"
-password = "pw3osunlockRed"
+from placer import Placer
 
-placer = Placer()
-placer.login(username, password)
+from src import local_configuration, target_configuration
+from src.color import get_color_from_index
 
-if placer.logged_in:
-    placer.place_tile(5, 5, Color.WHITE)
+PLACE_INTERVAL = 5 * 60
+
+placers = []
+for account in local_configuration["accounts"]:
+    placer = Placer()
+    placer.login(account["username"], account["password"])
+
+    if not placer.logged_in:
+        print("Failed to login to account: " + account["username"])
+        continue
+
+    placers.append(placer)
+
+print("\n", len(placers), " accounts logged in\n")
+
+
+while True:
+    for placer in placers:
+        if placer.last_placed + PLACE_INTERVAL + random.randrange(5, 25) > time.time():
+            continue
+
+        print("\nAttempting to place for: " + placer.username)
+
+        placer.update_board()
+        targetPixel = placer.board.get_mismatched_pixel(target_configuration.get_config()["pixels"])
+
+        if targetPixel is None:
+            print("No mismatched pixels found")
+            continue
+
+        placer.place_tile(targetPixel["x"], targetPixel["y"], get_color_from_index(targetPixel["color_index"]))
+
+        time.sleep(5)
+
+    time.sleep(5)

@@ -4,7 +4,14 @@ import time
 import json
 
 import requests
+from websocket import create_connection
 from bs4 import BeautifulSoup
+from io import BytesIO
+
+from src.board import Board
+from src.color import Color
+
+# based on https://github.com/goatgoose/PlaceBot and https://github.com/rdeepak2002/reddit-place-script-2022/blob/073c13f6b303f89b4f961cdbcbd008d0b4437b39/main.py#L316
 
 SET_PIXEL_QUERY = \
     """mutation setPixel($input: ActInput!) {
@@ -33,11 +40,6 @@ SET_PIXEL_QUERY = \
     """
 
 
-class Color(Enum):
-    BLACK = 27
-    WHITE = 31
-
-
 class Placer:
     REDDIT_URL = "https://www.reddit.com"
     LOGIN_URL = REDDIT_URL + "/login"
@@ -62,8 +64,14 @@ class Placer:
 
         self.token = None
         self.logged_in = False
+        self.board = Board()
+        self.last_placed = 0
+
+        self.username = "Unknown"
 
     def login(self, username: str, password: str):
+        self.username = username
+
         # get the csrf token
         print("Obtaining CSRF token...")
         r = self.client.get(self.LOGIN_URL)
@@ -86,10 +94,10 @@ class Placer:
         time.sleep(1)
 
         if r.status_code != 200:
-            print("Login failed!")
+            print("Authorization failed!")
             return
         else:
-            print("Login successful!")
+            print("Authorization successful!")
 
         # get the new access token
         print("Obtaining access token...")
@@ -98,10 +106,12 @@ class Placer:
         data = json.loads(data_str)
         self.token = data["user"]["session"]["accessToken"]
 
-        print("Logged in as " + username)
+        print("Logged in as " + username + "\n")
         self.logged_in = True
 
     def place_tile(self, x: int, y: int, color: Color):
+        self.last_placed = time.time()
+
         headers = self.INITIAL_HEADERS.copy()
         headers.update({
             "apollographql-client-name": "mona-lisa",
@@ -123,7 +133,7 @@ class Placer:
                     "input": {
                         "PixelMessageData": {
                             "canvasIndex": 0,
-                            "colorIndex": color.value,
+                            "colorIndex": color.value["id"],
                             "coordinate": {
                                 "x": x,
                                 "y": y
@@ -141,3 +151,76 @@ class Placer:
             print(r.content)
         else:
             print("Placed tile")
+
+    def update_board(self):
+        print("Getting board")
+        ws = create_connection("wss://gql-realtime-2.reddit.com/query")
+        ws.send(
+            json.dumps(
+                {
+                    "type": "connection_init",
+                    "payload": {"Authorization": "Bearer " + self.token},
+                }
+            )
+        )
+        ws.recv()
+        ws.send(
+            json.dumps(
+                {
+                    "id": "1",
+                    "type": "start",
+                    "payload": {
+                        "variables": {
+                            "input": {
+                                "channel": {
+                                    "teamOwner": "AFD2022",
+                                    "category": "CONFIG",
+                                }
+                            }
+                        },
+                        "extensions": {},
+                        "operationName": "configuration",
+                        "query": "subscription configuration($input: SubscribeInput!) {\n  subscribe(input: $input) {\n    id\n    ... on BasicMessage {\n      data {\n        __typename\n        ... on ConfigurationMessageData {\n          colorPalette {\n            colors {\n              hex\n              index\n              __typename\n            }\n            __typename\n          }\n          canvasConfigurations {\n            index\n            dx\n            dy\n            __typename\n          }\n          canvasWidth\n          canvasHeight\n          __typename\n        }\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+                    },
+                }
+            )
+        )
+        ws.recv()
+        ws.send(
+            json.dumps(
+                {
+                    "id": "2",
+                    "type": "start",
+                    "payload": {
+                        "variables": {
+                            "input": {
+                                "channel": {
+                                    "teamOwner": "AFD2022",
+                                    "category": "CANVAS",
+                                    "tag": "0",
+                                }
+                            }
+                        },
+                        "extensions": {},
+                        "operationName": "replace",
+                        "query": "subscription replace($input: SubscribeInput!) {\n  subscribe(input: $input) {\n    id\n    ... on BasicMessage {\n      data {\n        __typename\n        ... on FullFrameMessageData {\n          __typename\n          name\n          timestamp\n        }\n        ... on DiffFrameMessageData {\n          __typename\n          name\n          currentTimestamp\n          previousTimestamp\n        }\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+                    },
+                }
+            )
+        )
+
+        file = ""
+        while True:
+            temp = json.loads(ws.recv())
+            if temp["type"] == "data":
+                msg = temp["payload"]["data"]["subscribe"]
+                if msg["data"]["__typename"] == "FullFrameMessageData":
+                    file = msg["data"]["name"]
+                    break
+
+        ws.close()
+
+        boardimg = BytesIO(requests.get(file, stream=True).content)
+        print("Got image:", file)
+
+        self.board.update_image(boardimg)
