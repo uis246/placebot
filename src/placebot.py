@@ -8,16 +8,16 @@ from color import get_color_from_index
 
 
 
-placer = Placer()
-placer.login(local_configuration["accounts"][0]["username"], local_configuration["accounts"][0]["password"])
-placer.update_board()
-
-pixels = placer.board.get_mismatched_pixels(target_configuration.get_config()["pixels"])
-
-for pixel in pixels:
-    print(pixel, " , ", placer.board.get_pixel_color(pixel["x"], pixel["y"]))
-
-exit(0)
+# placer = Placer()
+# placer.login(local_configuration["accounts"][0]["username"], local_configuration["accounts"][0]["password"])
+# placer.update_board()
+#
+# pixels = placer.board.get_mismatched_pixels(target_configuration.get_config()["pixels"])
+#
+# for pixel in pixels:
+#     print(pixel, " , ", placer.board.get_pixel_color(pixel["x"], pixel["y"]))
+#
+# exit(0)
 
 
 
