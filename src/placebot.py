@@ -22,8 +22,8 @@ from color import get_color_from_index, Color
 # exit(0)
 
 
-
 PLACE_INTERVAL = 5 * 60
+SLEEP_MISMATCH_THRESHOLD = 5
 
 placers = []
 for account in local_configuration["accounts"]:
@@ -40,6 +40,8 @@ print("\n", len(placers), " accounts logged in\n")
 
 
 counter = 0
+lastMismatchCount = 1000 * 1000
+wasCompleted = False
 
 while True:
     for placer in placers:
@@ -58,19 +60,26 @@ while True:
             continue
 
         mismatched_pixels = placer.board.get_mismatched_pixels(target_configuration.get_config()["pixels"])
+        lastMismatchCount = len(mismatched_pixels)
+
         targetPixel = placer.board.get_mismatched_pixel(target_configuration.get_config()["pixels"])
 
         if targetPixel is None:
             print("No mismatched pixels found")
+            wasCompleted = True
             continue
 
-        print("Mismatched pixel found (" + (str(len(mismatched_pixels))) + "/" + (str(len(target_configuration.get_config()["pixels"]))) + "): " + str(targetPixel))
+        print("Mismatched pixel found (" + (str(lastMismatchCount)) + "/" + (str(len(target_configuration.get_config()["pixels"]))) + "): " + str(targetPixel))
         placer.place_tile(targetPixel["x"], targetPixel["y"], get_color_from_index(targetPixel["color_index"]))
         print()
 
         time.sleep(5)
 
     print("ETA:   ", ",  ".join([p.username + " - " + str(round(p.last_placed + PLACE_INTERVAL + 15 - time.time())) + " s" for p in placers]))
+
+    if wasCompleted and lastMismatchCount < SLEEP_MISMATCH_THRESHOLD:
+        print("Less than " + str(SLEEP_MISMATCH_THRESHOLD) + " mismatched pixels found, going to sleep, good night")
+        time.sleep(90)
 
     time.sleep(30)
 
