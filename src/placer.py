@@ -157,8 +157,13 @@ class Placer:
             print("Placed tile")
 
     def update_board(self):
-        for canvas_id in target_configuration.get_config()["canvases_enabled"]:
-            self.update_canvas(canvas_id)
+        if "canvases_enabled" in target_configuration.get_config():
+            for canvas_id in target_configuration.get_config()["canvases_enabled"]:
+                self.update_canvas(canvas_id)
+        else:
+            for canvas_id in [0, 1]:
+                self.update_canvas(canvas_id)
+
 
     def update_canvas(self, canvas_id):
         print("Getting board")
