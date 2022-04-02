@@ -1,4 +1,5 @@
 import json
+import math
 
 from PIL import Image
 import sys
@@ -19,6 +20,7 @@ image_data = image.load()
 
 print("Converting image...")
 target_pixels = []
+canvases_enabled = []
 transparent_pixels = 0
 
 print("Image size: " + str(image.size))
@@ -40,11 +42,16 @@ for y in range(image.height):
             "color_index": closest_color.value["id"]
         })
 
+        target_canvas = math.floor((x + offset_x) / 1000)
+        if target_canvas not in canvases_enabled:
+            canvases_enabled.append(target_canvas)
+
 print("Discarded " + str(transparent_pixels) + " transparent pixels")
 
 print("Writing out.cfg ...")
 with open("out.cfg", "w") as target_file:
     json.dump({
+        "canvases_enabled": canvases_enabled,  # reduces processing time by not pulling unrelated canvases
         "pixels": target_pixels
     }, target_file)
 
