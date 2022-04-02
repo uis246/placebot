@@ -4,7 +4,7 @@ import math
 from PIL import Image
 import sys
 
-from src.color import get_closest_color
+from color import get_closest_color
 
 if len(sys.argv) < 4:
     print("Usage: python3 image_converter.py <input_image> <offset_x> <offset_y>")
