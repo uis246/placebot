@@ -49,6 +49,7 @@ class Board:
 
             if currentColor is None:
                 print("Couldn't determine color for pixel at " + str(target_pixel["x"]) + ", " + str(target_pixel["y"]))
+                continue
 
             if currentColor.value["id"] != target_pixel["color_index"]:
                 mismatched_pixels.append(target_pixel)
