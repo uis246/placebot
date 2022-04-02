@@ -39,7 +39,8 @@ class Board:
         if len(mismatched_pixels) == 0:
             return None
 
-        return random.choice(mismatched_pixels) # TODO: does this work?
+        # return random.choice(mismatched_pixels) # TODO: does this work?
+        return mismatched_pixels[0]
 
     def get_mismatched_pixels(self, target_pixels):
         mismatched_pixels = []
