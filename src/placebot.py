@@ -47,13 +47,15 @@ while True:
         print("Attempting to place for: " + placer.username)
 
         placer.update_board()
+
+        mismatched_pixels = placer.board.get_mismatched_pixel(target_configuration.get_config()["pixels"])
         targetPixel = placer.board.get_mismatched_pixel(target_configuration.get_config()["pixels"])
 
         if targetPixel is None:
             print("No mismatched pixels found")
             continue
 
-        print("Mismatched pixel found: " + str(targetPixel))
+        print("Mismatched pixel found (" + (str(len(mismatched_pixels))) + "/" + (str(len(target_configuration.get_config()["pixels"]))) + "): " + str(targetPixel))
         placer.place_tile(targetPixel["x"], targetPixel["y"], get_color_from_index(targetPixel["color_index"]))
         print()
 
