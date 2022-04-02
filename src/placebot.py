@@ -2,9 +2,9 @@ import random
 import time
 
 from placer import Placer
-
-from src import local_configuration, target_configuration
-from src.color import get_color_from_index
+from local_configuration import local_configuration
+from target_configuration import target_configuration
+from color import get_color_from_index
 
 PLACE_INTERVAL = 5 * 60
 

@@ -3,7 +3,7 @@ import json
 from PIL import Image
 import sys
 
-from src.color import get_closest_color
+from color import get_closest_color
 
 if len(sys.argv) < 4:
     print("Usage: python3 image_converter.py <input_image> <offset_x> <offset_y>")
@@ -19,12 +19,14 @@ image_data = image.load()
 
 print("Converting image...")
 target_pixels = []
+transparent_pixels = 0
 
 for x in range(image.width):
     for y in range(image.height):
         rgba = image_data[x, y]
 
         if(rgba[3] == 0):  # skip transparent pixels
+            transparent_pixels += 1
             continue
 
         closest_color = get_closest_color(rgba[0], rgba[1], rgba[2])
@@ -34,6 +36,8 @@ for x in range(image.width):
             "y": y + offset_y,
             "color_index": closest_color.value["id"]
         })
+
+print("Discarded " + str(transparent_pixels) + " transparent pixels")
 
 print("Writing out.cfg ...")
 with open("out.cfg", "w") as target_file:

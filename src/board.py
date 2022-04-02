@@ -3,7 +3,7 @@ import time
 
 from PIL import Image
 
-from src.color import get_matching_color, Color
+from color import get_matching_color, Color
 
 BOARD_SIZE_X = 1000
 BOARD_SIZE_Y = 1000
@@ -39,7 +39,7 @@ class Board:
         if len(mismatched_pixels) == 0:
             return None
 
-        return random.choice(mismatched_pixels)
+        return random.choice(mismatched_pixels) # TODO: does this work?
 
     def get_mismatched_pixels(self, target_pixels):
         mismatched_pixels = []
