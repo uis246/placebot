@@ -8,18 +8,18 @@ from local_configuration import local_configuration
 from target_configuration import target_configuration
 from color import get_color_from_index, Color
 
-placer = Placer()
-placer.login(local_configuration["accounts"][2]["username"], local_configuration["accounts"][2]["password"])
-placer.update_board()
-
-placer.place_tile(1955, 3, Color.LIGHT_GREEN)
-
-# pixels = placer.board.get_mismatched_pixels(target_configuration.get_config()["pixels"])
+# placer = Placer()
+# placer.login(local_configuration["accounts"][2]["username"], local_configuration["accounts"][2]["password"])
+# placer.update_board()
 #
-# for pixel in pixels:
-#     print(pixel, " , ", placer.board.get_pixel_color(pixel["x"], pixel["y"]))
-
-exit(0)
+# placer.place_tile(1955, 3, Color.LIGHT_GREEN)
+#
+# # pixels = placer.board.get_mismatched_pixels(target_configuration.get_config()["pixels"])
+# #
+# # for pixel in pixels:
+# #     print(pixel, " , ", placer.board.get_pixel_color(pixel["x"], pixel["y"]))
+#
+# exit(0)
 
 
 
