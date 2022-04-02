@@ -12,12 +12,12 @@ from color import get_color_from_index, Color
 # placer.login(local_configuration["accounts"][2]["username"], local_configuration["accounts"][2]["password"])
 # placer.update_board()
 #
-# placer.place_tile(1955, 3, Color.LIGHT_GREEN)
+# # placer.place_tile(1955, 3, Color.LIGHT_GREEN)
 #
-# # pixels = placer.board.get_mismatched_pixels(target_configuration.get_config()["pixels"])
-# #
-# # for pixel in pixels:
-# #     print(pixel, " , ", placer.board.get_pixel_color(pixel["x"], pixel["y"]))
+# pixels = placer.board.get_mismatched_pixels(target_configuration.get_config()["pixels"])
+#
+# for pixel in pixels:
+#     print(pixel, " , ", placer.board.get_pixel_color(pixel["x"], pixel["y"]))
 #
 # exit(0)
 

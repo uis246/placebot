@@ -158,7 +158,7 @@ class Placer:
             print("Placed tile")
 
     def update_board(self):
-        self.update_canvas(0)
+        # self.update_canvas(0)
         self.update_canvas(1)
 
     def update_canvas(self, canvas_id):
@@ -228,11 +228,11 @@ class Placer:
 
                     if canvas_id == 0:
                         boardimg = BytesIO(requests.get(file, stream=True).content)
-                        print("Got image ", canvas_id, ":", file)
+                        print("Got first image, canvas ", canvas_id, ":", file)
                         self.board.update_image(boardimg, 0, 0)
                     elif canvas_id == 1:
                         boardimg = BytesIO(requests.get(file, stream=True).content)
-                        print("Got image ", canvas_id, ":", file)
+                        print("Got second image, canvas ", canvas_id, ":", file)
                         self.board.update_image(boardimg, 1000, 0)
 
                     break

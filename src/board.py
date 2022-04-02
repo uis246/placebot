@@ -30,7 +30,7 @@ class Board:
         # convert to color indices
         for x in range(image.width):
             for y in range(image.height):
-                self.colors[x][y]= get_matching_color(image_data[x, y])
+                self.colors[x + offset_x][y]= get_matching_color(image_data[x, y])
 
         print("Board updated.")
     
