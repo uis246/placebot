@@ -35,6 +35,8 @@ def get_matching_color(rgb) -> Color:
     for color in Color:
         if color.value["rgb"] == rgb:
             return color
+
+    print("Color not found:", rgb)
     return None
 
 def get_color_from_index(index) -> Color:

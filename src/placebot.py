@@ -70,12 +70,9 @@ while True:
 
         time.sleep(5)
 
-    counter -= 1
-    if counter <= 0:
-        counter = 6
-        print("ETA:   ", ",  ".join([p.username + " - " + str(round(p.last_placed + PLACE_INTERVAL + 15 - time.time())) + " s" for p in placers]))
+    print("ETA:   ", ",  ".join([p.username + " - " + str(round(p.last_placed + PLACE_INTERVAL + 15 - time.time())) + " s" for p in placers]))
 
-    time.sleep(5)
+    time.sleep(30)
 
 
 # Traceback (most recent call last):
