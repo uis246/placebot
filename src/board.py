@@ -12,8 +12,9 @@ class Board:
 
     def __init__(self):
         self.last_update = 0
-        self.colors = []
+        self.colors = []  # 2D array of the entire board (BOARD_SIZE_X x BOARD_SIZE_Y), Color objects
 
+        # Fill with white preset
         for x in range(BOARD_SIZE_X):
             column = []
             for y in range(BOARD_SIZE_Y):
