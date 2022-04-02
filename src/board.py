@@ -40,7 +40,7 @@ class Board:
             return None
 
         # return random.choice(mismatched_pixels) # TODO: does this work?
-        return mismatched_pixels[0]
+        return mismatched_pixels[max(random.randrange(0, 8), len(mismatched_pixels) - 1)]
 
     def get_mismatched_pixels(self, target_pixels):
         mismatched_pixels = []
