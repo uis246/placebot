@@ -37,12 +37,14 @@ for account in local_configuration["accounts"]:
 print("\n", len(placers), " accounts logged in\n")
 
 
+counter = 0
+
 while True:
     for placer in placers:
         if placer.last_placed + PLACE_INTERVAL + random.randrange(5, 25) > time.time():
             continue
 
-        print("\nAttempting to place for: " + placer.username)
+        print("Attempting to place for: " + placer.username)
 
         placer.update_board()
         targetPixel = placer.board.get_mismatched_pixel(target_configuration.get_config()["pixels"])
@@ -53,7 +55,13 @@ while True:
 
         print("Mismatched pixel found: " + str(targetPixel))
         placer.place_tile(targetPixel["x"], targetPixel["y"], get_color_from_index(targetPixel["color_index"]))
+        print()
 
         time.sleep(5)
+
+    counter -= 1
+    if counter <= 0:
+        counter = 6
+        print("ETA:   ", ",  ".join([p.username + " - " + str(round(p.last_placed + PLACE_INTERVAL + 15 - time.time())) + " s" for p in placers]))
 
     time.sleep(5)
