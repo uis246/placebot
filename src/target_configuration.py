@@ -3,7 +3,7 @@ import time
 
 import requests
 
-import local_configuration
+from local_configuration import local_configuration
 
 UPDATE_INTERVAL = 60
 
