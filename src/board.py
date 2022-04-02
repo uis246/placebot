@@ -45,6 +45,6 @@ class Board:
         mismatched_pixels = []
         for target_pixel in target_pixels:
             currentColor = self.get_pixel_color(target_pixel["x"], target_pixel["y"])
-            if currentColor != target_pixel["color_index"]:
+            if currentColor.value["id"] != target_pixel["color_index"]:
                 mismatched_pixels.append(target_pixel)
         return mismatched_pixels
