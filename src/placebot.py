@@ -9,10 +9,10 @@ from target_configuration import target_configuration
 from color import get_color_from_index, Color
 
 #### TESTING ####
-# def testing():
-#     placer = Placer()
-#     placer.login(local_configuration["accounts"][2]["username"], local_configuration["accounts"][2]["password"])
-#     placer.update_board()
+def testing():
+    placer = Placer()
+    placer.login(local_configuration["accounts"][0]["username"], local_configuration["accounts"][0]["password"])
+    placer.update_board()
 #     
 #     # placer.place_tile(1955, 3, Color.LIGHT_GREEN)
 #     
@@ -22,6 +22,7 @@ from color import get_color_from_index, Color
 #         print(pixel, " , ", placer.board.get_pixel_color(pixel["x"], pixel["y"]))
 #     
 #     exit(0)
+testing()
 #### END TESTING ####
 
 
