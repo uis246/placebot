@@ -23,6 +23,7 @@ class Color(Enum):
     DARK_BROWN = {"id": 24, "hex": "#6D482F"}
     BROWN = {"id": 25, "hex": "#9C6926"}
     BLACK = {"id": 27, "hex": "#000000"}
+    DARK_GREY = {"id": 28, "hex": "#515252"}
     GREY = {"id": 29, "hex": "#898D90"}
     LIGHT_GREY = {"id": 30, "hex": "#D4D7D9"}
     WHITE = {"id": 31, "hex": "#FFFFFF"}
