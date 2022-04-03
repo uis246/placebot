@@ -6,7 +6,7 @@ from PIL import Image
 from color import get_matching_color, Color
 
 BOARD_SIZE_X = 2000
-BOARD_SIZE_Y = 1000
+BOARD_SIZE_Y = 2000
 
 class Board:
 

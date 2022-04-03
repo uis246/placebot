@@ -116,7 +116,7 @@ class Placer:
 
         x = x % 1000  # we need to send relative to the canvas
         y = y % 1000  # we need to send relative to the canvas
-
+        print("Target canvas: " + str(canvas_id) + " (" + str(x) + ", " + str(y) + ")")
 
 
         self.last_placed = time.time()
