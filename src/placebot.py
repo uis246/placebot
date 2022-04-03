@@ -118,6 +118,5 @@ while True:
     except Exception as e:
         print("\n\nError encountered while running bot: " + str(e))
         print("\nRestarting...\n")
-        raise e
         time.sleep(10)  # wait a bit in case the server lost connection
 
