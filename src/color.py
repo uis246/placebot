@@ -40,7 +40,7 @@ def get_matching_color(rgb) -> Color:
         if color.value["rgb"] == rgb:
             return color
 
-    print("Color not found:", rgb)
+    # print("Color not found:", rgb)
     return None
 
 """
