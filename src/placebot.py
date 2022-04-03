@@ -9,10 +9,10 @@ from target_configuration import target_configuration
 from color import get_color_from_index, Color
 
 #### TESTING ####
-def testing():
-    placer = Placer()
-    placer.login(local_configuration["accounts"][0]["username"], local_configuration["accounts"][0]["password"])
-    placer.update_board()
+# def testing():
+#     placer = Placer()
+#     placer.login(local_configuration["accounts"][0]["username"], local_configuration["accounts"][0]["password"])
+#     placer.update_board()
 #     
 #     # placer.place_tile(1955, 3, Color.LIGHT_GREEN)
 #     
@@ -22,7 +22,7 @@ def testing():
 #         print(pixel, " , ", placer.board.get_pixel_color(pixel["x"], pixel["y"]))
 #     
 #     exit(0)
-testing()
+# testing()
 #### END TESTING ####
 
 
@@ -118,5 +118,6 @@ while True:
     except Exception as e:
         print("\n\nError encountered while running bot: " + str(e))
         print("\nRestarting...\n")
+        raise e
         time.sleep(10)  # wait a bit in case the server lost connection
 
