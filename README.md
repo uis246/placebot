@@ -44,6 +44,8 @@ The generated file contains the coordinates and closest available place color fo
 You can then put the generated file on a web server of your choosing.
 Alternatively, just put it in the folder next to the local configuration file.
 
+**If you are using Windows** with a local target configuration file, make sure to use double backslashes `C:\\path\\to\\the\\file.cfg` as the backslash `\` is an escape character in JSON.
+
 ### Configure local
 Copy the configuration template:
 ```
