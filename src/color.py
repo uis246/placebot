@@ -13,7 +13,7 @@ class Color(Enum):
     LIGHT_GREEN = {"id": 8, "hex": "#7EED56"}
     DARK_TEAL = {"id": 9, "hex": "#00756F"}
     LIGHT_TEAL = {"id": 10, "hex": "#009EAA"}
-    DARK_TEAL = {"id": 11, "hex": "#00CCC0"}
+    SATURATED_TEAL = {"id": 11, "hex": "#00CCC0"}
     DARK_BLUE = {"id": 12, "hex": "#2450A4"}
     BLUE = {"id": 13, "hex": "#3690EA"}
     CYAN = {"id": 14, "hex": "#51E9F4"}
@@ -35,21 +35,21 @@ class Color(Enum):
     LIGHT_GREY = {"id": 30, "hex": "#D4D7D9"}
     WHITE = {"id": 31, "hex": "#FFFFFF"}
 
+rgb_to_color = {}
 # generate rgb values for all colors
 for color in Color:
     color.value["rgb"] = ImageColor.getcolor(color.value["hex"], "RGB")
+    rgb_to_color.update({color.value["rgb"]: color})
 
 
 """
 Returns the color object based on the given rgb tuple
 """
 def get_matching_color(rgb) -> Color:
-    for color in Color:
-        if color.value["rgb"] == rgb:
-            return color
-
-    # print("Color not found:", rgb)
-    return None
+    if (color := rgb_to_color.get(rgb)) is None:
+        # print("Color not found:", rgb)
+        return None
+    return color
 
 """
 Returns the color object based on a given place color index
