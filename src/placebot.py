@@ -105,10 +105,12 @@ def run_board_watcher_placer(placers):
         oldest_entry = mismatched_recording[oldest_time]
         newest_entry = mismatched_recording[newest_time]
 
-        if float(newest_time) - float(oldest_time) > 60:
-            time_per_pixel = (float(newest_time) - float(oldest_time)) / (newest_entry - oldest_entry)
+        if float(newest_time) - float(oldest_time) > 60 and mismatched_pixels > total_pixel_count * SLEEP_MISMATCH_THRESHOLD:
+            time_per_pixel = (float(newest_time) - float(oldest_time)) / (oldest_entry - newest_entry)
             remaining_time = (total_pixel_count - last_mismatch_count) * time_per_pixel
             remaining_time_formatted = "%d:%02d" % (remaining_time / 60, remaining_time % 60)
+        elif mismatched_pixels < total_pixel_count * SLEEP_MISMATCH_THRESHOLD:
+            remaining_time_formatted = "0:00"
         else:
             remaining_time_formatted = "??:??"
 
