@@ -125,6 +125,12 @@ def run_board_watcher_placer(placers):
 
 # Run the entire thing
 def run_bot():
+    target_pixel_count = len(target_configuration.get_config()["pixels"])  # pull the target configuration to ensure the bot termiantes when the control server is not reachable
+
+    if target_pixel_count == 0:
+        print("No target pixels found, stopping bot")
+    print(target_pixel_count, "pixels in target configuration, starting...")
+
     placers = login_all()
     run_board_watcher_placer(placers)
 
