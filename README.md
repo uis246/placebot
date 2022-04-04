@@ -1,6 +1,6 @@
 # placebot
 
-This is a functional bot for the r/place 2022 event, supporting at the time of writing all (2) canvases.
+This is a functional bot for the r/place 2022 event, supporting at the time of writing all (4) canvases.
 
 Based on code from https://github.com/goatgoose/PlaceBot and https://github.com/rdeepak2002/reddit-place-script-2022.
 
@@ -9,7 +9,7 @@ Based on code from https://github.com/goatgoose/PlaceBot and https://github.com/
 - Convert input image to be drawn to target configuration, ignores transparent pixels
 - Supports multiple accounts
 - Supports obtaining the target configuration from a server (or local file) to prevent outdated templates
-- Supports multiple canvases (2 at the time of writing)
+- Supports multiple canvases (4 at the time of writing)
 - Goes to sleep when only few mismatched pixels remain
 
 ## Prerequisites
