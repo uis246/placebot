@@ -26,6 +26,7 @@ from color import get_color_from_index, Color
 #### END TESTING ####
 
 
+CUTOFF_TIMESTAMP = 1649132100
 
 PLACE_INTERVAL = 5 * 60  #  The interval that pixels can be placed at
 SLEEP_MISMATCH_THRESHOLD = 0.005  # The percentage of pixels mismatching that cause the bot to slow down (not stop) its refresh rate
@@ -129,7 +130,15 @@ def run_bot():
 
     if target_pixel_count == 0:
         print("No target pixels found, stopping bot")
+        exit(0)
     print(target_pixel_count, "pixels in target configuration, starting...")
+
+    if "stop" in target_configuration.get_config():
+        print("Target configuration has stop command, stopping bot")
+        exit(0)
+    if time.time() > CUTOFF_TIMESTAMP:
+        print("Cutoff timestamp reached, stopping bot at ", time.time())
+        exit(0)
 
     placers = login_all()
     run_board_watcher_placer(placers)
