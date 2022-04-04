@@ -12,25 +12,40 @@ Based on code from https://github.com/goatgoose/PlaceBot and https://github.com/
 - Supports multiple canvases (2 at the time of writing)
 - Goes to sleep when only few mismatched pixels remain
 
+## Prerequisites
+- Python 3.5+
+- Git
+
+### Linux
+I hope you know what you're doing.
+
+### Windows
+Git: https://git-scm.com/
+Python: https://www.python.org/downloads/
+
+To use python on Windows, you will have to add the python installation directory to your PATH environment variable. You can do the same for pip, but just using `python -m pip` should also work.
+You can then open a shell by right clicking and hitting bash here in the directory of your choice.
+
+
 ## Installation
 Clone the repostory:
 ```
 git clone https://github.com/Geosearchef/placebot.git
 ```
 
-Create a virtual environment
+Create a virtual environment (if you want to install globally, skip this)
 ```
 python3 -m virtualenv .venv
 ```
 
-and install the dependencies (or just install them globally):
-```
-python3 -m pip install -r requirements.txt
-```
-
-Source the environment (for bash):
+source the environment (for bash)
 ```
 source .venv/bin/activate
+```
+
+and install the dependencies:
+```
+python3 -m pip install -r requirements.txt
 ```
 
 ### Generate target configuration
