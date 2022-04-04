@@ -31,6 +31,7 @@ You can then open a shell by right clicking and hitting bash here in the directo
 Clone the repostory:
 ```
 git clone https://github.com/Geosearchef/placebot.git
+cd placebot
 ```
 
 Create a virtual environment (if you want to install globally, skip this)
