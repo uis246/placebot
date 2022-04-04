@@ -101,7 +101,7 @@ def run_board_watcher_placer(placers):
         # remaining time estimation
         mismatched_recording = { k:mismatched_recording[k] for k in mismatched_recording.keys() if float(k) > time.time() - 20 * 60}
         oldest_time = min(mismatched_recording.keys(), key=lambda rk: float(rk))
-        newest_time = min(mismatched_recording.keys(), key=lambda rk: float(rk))
+        newest_time = max(mismatched_recording.keys(), key=lambda rk: float(rk))
         oldest_entry = mismatched_recording[oldest_time]
         newest_entry = mismatched_recording[newest_time]
 
