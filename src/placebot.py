@@ -58,6 +58,8 @@ def run_board_watcher_placer(placers):
     last_mismatch_count = 1000 * 1000
     was_completed = False
 
+    mismatched_recording = {}
+
     while True:
         for placer in placers:
             if placer.last_placed + PLACE_INTERVAL + random.randrange(2, 15) > time.time():  # Triggered every PLACE_INTERVAL seconds, + random offset (5-25 seconds)
@@ -77,6 +79,7 @@ def run_board_watcher_placer(placers):
             mismatched_pixels = placer.board.get_mismatched_pixels(target_configuration.get_config()["pixels"])
             last_mismatch_count = len(mismatched_pixels)
             total_pixel_count = len(target_configuration.get_config()["pixels"])
+            mismatched_recording[str(time.time())] = len(mismatched_pixels)
 
             # Get random mismatched target pixel
             target_pixel = placer.board.get_mismatched_pixel(target_configuration.get_config()["pixels"])
@@ -95,7 +98,21 @@ def run_board_watcher_placer(placers):
             time.sleep(5)
 
         # Be nice and verbose so users don't look at nothing for 5 minutes
-        print("ETA:   ", ",  ".join([p.username + " - " + str(round(p.last_placed + PLACE_INTERVAL + 15 - time.time())) + " s" for p in placers]))
+        # remaining time estimation
+        mismatched_recording = { k:mismatched_recording[k] for k in mismatched_recording.keys() if float(k) > time.time() - 20 * 60}
+        oldest_time = min(mismatched_recording.keys(), key=lambda rk: float(rk))
+        newest_time = min(mismatched_recording.keys(), key=lambda rk: float(rk))
+        oldest_entry = mismatched_recording[oldest_time]
+        newest_entry = mismatched_recording[newest_time]
+
+        if float(newest_time) - float(oldest_time) > 60:
+            time_per_pixel = (float(newest_time) - float(oldest_time)) / (newest_entry - oldest_entry)
+            remaining_time = (total_pixel_count - last_mismatch_count) * time_per_pixel
+            remaining_time_formatted = "%d:%02d" % (remaining_time / 60, remaining_time % 60)
+        else:
+            remaining_time_formatted = "??:??"
+
+        print("ETA: %s   %s" % ( remaining_time_formatted, ",  ".join([p.username + " - " + str(round(p.last_placed + PLACE_INTERVAL + 15 - time.time())) + " s" for p in placers])))
 
         # If we already completed the template and the mismatch is below threshold, it's time to go to sleep
         if was_completed and last_mismatch_count < (SLEEP_MISMATCH_THRESHOLD * total_pixel_count):
