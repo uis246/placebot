@@ -39,11 +39,11 @@ def login_all():
     placers = []
     for account in local_configuration["accounts"]:
         placer = Placer()
-        placer.login(account["username"], account["password"])
+        placer.login(account["token"])
 
-        if not placer.logged_in:
-            print("Failed to login to account: " + account["username"])
-            continue
+        #if not placer.logged_in:
+        #    print("Failed to login to account: " + account["username"])
+        #    continue
 
         placers.append(placer)
 
@@ -55,7 +55,7 @@ Periodically pulls the board and places a tile when required
 """
 def run_board_watcher_placer(placers):
     # Tracks if the template was completed and how many mismatches there were, if yes and below threshold, goes to sleep
-    total_pixel_count = 1000 * 1000
+    total_pixel_count = 1000 * 2000
     last_mismatch_count = 1000 * 1000
     was_completed = False
 
@@ -147,10 +147,10 @@ def run_bot():
 # (which happens exactly 1h after login probably due to some token being invalid)
 # I could just refresh that token, but I have a life, feel free to create a PR
 while True:
-    try:
+    #try:
         run_bot()
-    except Exception as e:
-        print("\n\nError encountered while running bot: " + str(e))
-        print("\nRestarting...\n")
-        time.sleep(10)  # wait a bit in case the server lost connection
+    #except Exception as e:
+    #    print("\n\nError encountered while running bot: " + str(e))
+    #    print("\nRestarting...\n")
+    #    time.sleep(10)  # wait a bit in case the server lost connection
 

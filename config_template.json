@@ -1,7 +1,6 @@
 {
     "accounts": [
-        {"username": "Hello", "password":  "World"},
-        {"username": "Hello2", "password":  "World"}
+        {"token": "get token_v2 cookie"}
     ],
     "target_configuration_url": "https://example.com/place.cfg"
 }

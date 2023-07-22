@@ -45,17 +45,17 @@ class Placer:
     LOGIN_URL = REDDIT_URL + "/login"
     INITIAL_HEADERS = {
         "accept": "*/*",
-        "accept-encoding": "gzip, deflate, br",
+        #"accept-encoding": "gzip, deflate, br",
         "accept-language": "en-US,en;q=0.9",
         "content-type": "application/x-www-form-urlencoded",
         "origin": REDDIT_URL,
-        "sec-ch-ua": '" Not A;Brand";v="99", "Chromium";v="100", "Google Chrome";v="100"',
+        "sec-ch-ua": '"Not?A_Brand";v="8", "Chromium";v="108"',
         "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"Windows"',
+        "sec-ch-ua-platform": '"Linux"',
         "sec-fetch-dest": "empty",
         "sec-fetch-mode": "cors",
         "sec-fetch-site": "same-origin",
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36"
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
     }
 
     def __init__(self):
@@ -69,44 +69,8 @@ class Placer:
 
         self.username = "Unknown"
 
-    def login(self, username: str, password: str):
-        self.username = username
-
-        # get the csrf token
-        print("Obtaining CSRF token...")
-        r = self.client.get(self.LOGIN_URL)
-        time.sleep(1)
-
-        login_get_soup = BeautifulSoup(r.content, "html.parser")
-        csrf_token = login_get_soup.find("input", {"name": "csrf_token"})["value"]
-
-        # authenticate
-        print("Logging in...")
-        r = self.client.post(
-            self.LOGIN_URL,
-            data={
-                "username": username,
-                "password": password,
-                "dest": self.REDDIT_URL,
-                "csrf_token": csrf_token
-            }
-        )
-        time.sleep(1)
-
-        if r.status_code != 200:
-            print("Authorization failed!")  # password is probably invalid
-            return
-        else:
-            print("Authorization successful!")
-
-        # get the new access token
-        print("Obtaining access token...")
-        r = self.client.get(self.REDDIT_URL)
-        data_str = BeautifulSoup(r.content, features="html.parser").find("script", {"id": "data"}).contents[0][len("window.__r = "):-1]
-        data = json.loads(data_str)
-        self.token = data["user"]["session"]["accessToken"]
-
-        print("Logged in as " + username + "\n")
+    def login(self, token: str):
+        self.token = token
         self.logged_in = True
 
     def place_tile(self, x: int, y: int, color: Color):
@@ -200,14 +164,14 @@ class Placer:
                         "variables": {
                             "input": {
                                 "channel": {
-                                    "teamOwner": "AFD2022",
+                                    "teamOwner": "GARLICBREAD",
                                     "category": "CONFIG",
                                 }
                             }
                         },
                         "extensions": {},
                         "operationName": "configuration",
-                        "query": "subscription configuration($input: SubscribeInput!) {\n  subscribe(input: $input) {\n    id\n    ... on BasicMessage {\n      data {\n        __typename\n        ... on ConfigurationMessageData {\n          colorPalette {\n            colors {\n              hex\n              index\n              __typename\n            }\n            __typename\n          }\n          canvasConfigurations {\n            index\n            dx\n            dy\n            __typename\n          }\n          canvasWidth\n          canvasHeight\n          __typename\n        }\n      }\n      __typename\n    }\n    __typename\n  }\n}\n",
+                        "query": "subscription configuration($input: SubscribeInput!) {\n  subscribe(input: $input) {\n    id\n    ... on BasicMessage {\n      data {\n        __typename\n        ... on ConfigurationMessageData {\n          colorPalette {\n            colors {\n              hex\n              index\n              __typename\n            }\n            __typename\n          }\n          canvasConfigurations {\n            index\n            dx\n            dy\n            __typename\n          }\n          activeZone {\n            topLeft {\n              x\n              y\n              __typename\n            }\n            bottomRight {\n              x\n              y\n              __typename\n            }\n            __typename\n          }\n          canvasWidth\n          canvasHeight\n          adminConfiguration {\n            maxAllowedCircles\n            maxUsersPerAdminBan\n            __typename\n          }\n          __typename\n        }\n      }\n      __typename\n    }\n    __typename\n  }\n}\n"
                     },
                 }
             )
@@ -222,7 +186,7 @@ class Placer:
                         "variables": {
                             "input": {
                                 "channel": {
-                                    "teamOwner": "AFD2022",
+                                    "teamOwner": "GARLICBREAD",
                                     "category": "CANVAS",
                                     "tag": str(canvas_id),
                                 }
@@ -248,6 +212,7 @@ class Placer:
                     img = BytesIO(requests.get(filename, stream=True).content)
 
                     # Tell the board to update with the offset of the current canvas
+                    #FIXME
                     if canvas_id == 0:
                         self.board.update_image(img, 0, 0)
                     if canvas_id == 1:
