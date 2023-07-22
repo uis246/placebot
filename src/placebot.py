@@ -136,9 +136,9 @@ def run_bot():
     if "stop" in target_configuration.get_config():
         print("Target configuration has stop command, stopping bot")
         exit(0)
-    if time.time() > CUTOFF_TIMESTAMP:
-        print("Cutoff timestamp reached, stopping bot at ", time.time())
-        exit(0)
+    #if time.time() > CUTOFF_TIMESTAMP:
+    #    print("Cutoff timestamp reached, stopping bot at ", time.time())
+    #    exit(0)
 
     placers = login_all()
     run_board_watcher_placer(placers)

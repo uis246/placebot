@@ -123,11 +123,11 @@ class Placer:
 
         headers = self.INITIAL_HEADERS.copy()
         headers.update({
-            "apollographql-client-name": "mona-lisa",
+            "apollographql-client-name": "garlic-bread",
             "apollographql-client-version": "0.0.1",
             "content-type": "application/json",
-            "origin": "https://hot-potato.reddit.com",
-            "referer": "https://hot-potato.reddit.com/",
+            "origin": "https://garlic-bread.reddit.com",
+            "referer": "https://garlic-bread.reddit.com/",
             "sec-fetch-site": "same-site",
             "authorization": "Bearer " + self.token
         })
@@ -167,11 +167,11 @@ class Placer:
     Fetch the current state of the board/canvas for the requed areas
     """
     def update_board(self):
-        if "canvases_enabled" in target_configuration.get_config():  # the configuration can disable some canvases to reduce load
-            for canvas_id in target_configuration.get_config()["canvases_enabled"]:
-                self.update_canvas(canvas_id)
-        else:  # by default, use all (2 at the moment)
-            for canvas_id in [0, 1]:
+        #if "canvases_enabled" in target_configuration.get_config():  # the configuration can disable some canvases to reduce load
+        #    for canvas_id in target_configuration.get_config()["canvases_enabled"]:
+        #        self.update_canvas(canvas_id)
+        #else:  # by default, use all (2 at the moment)
+            for canvas_id in [0, 1, 2, 3, 4, 5]:
                 self.update_canvas(canvas_id)
 
     """
@@ -252,11 +252,12 @@ class Placer:
                         self.board.update_image(img, 0, 0)
                     if canvas_id == 1:
                         self.board.update_image(img, 1000, 0)
-                    if canvas_id == 2:
-                        self.board.update_image(img, 0, 1000)
                     if canvas_id == 3:
+                        self.board.update_image(img, 2000, 0)
+                    if canvas_id == 4:
                         self.board.update_image(img, 1000, 1000)
-
+                    if canvas_id == 5:
+                        self.board.update_image(img, 2000, 1000)
                     break
 
         ws.close()

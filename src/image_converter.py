@@ -47,7 +47,7 @@ for y in range(image.height):
         })
 
         # target_canvas = math.floor((x + offset_x) / 1000)
-        target_canvas = board.get_canvas_id_from_coords(x + offset_x, y + offset_y)
+        target_canvas = board.get_canvas_id_from_coords(x + offset_x + 1000, y + offset_y + 1000)
         if target_canvas not in canvases_enabled:
             canvases_enabled.append(target_canvas)
 

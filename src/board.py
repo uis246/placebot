@@ -6,7 +6,7 @@ from PIL import Image
 from color import get_matching_color, Color
 
 BOARD_SIZE_X = 2000
-BOARD_SIZE_Y = 2000
+BOARD_SIZE_Y = 1000
 
 class Board:
 
@@ -63,10 +63,14 @@ class Board:
     def get_canvas_id_from_coords(self, x, y):
         if x < 1000 and y < 1000:
             canvas_id = 0
-        if x >= 1000 and y < 1000:
+        if x >= 1000 and y < 1000 and x < 2000:
             canvas_id = 1
-        if x < 1000 and y >= 1000:
+        if x >= 2000 and y < 1000:
             canvas_id = 2
-        if x >= 1000 and y >= 1000:
+        if x < 1000 and y >= 1000:
             canvas_id = 3
+        if x >= 1000 and y >= 1000:
+            canvas_id = 4
+        if x >= 2000 and y >= 1000:
+            canvas_id = 5
         return canvas_id
