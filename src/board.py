@@ -61,6 +61,8 @@ class Board:
         return mismatched_pixels
 
     def get_canvas_id_from_coords(self, x, y):
+        x += 1000
+        y += 1000
         if x < 1000 and y < 1000:
             canvas_id = 0
         if x >= 1000 and y < 1000 and x < 2000:

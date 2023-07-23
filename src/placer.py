@@ -131,10 +131,10 @@ class Placer:
     Fetch the current state of the board/canvas for the requed areas
     """
     def update_board(self):
-        #if "canvases_enabled" in target_configuration.get_config():  # the configuration can disable some canvases to reduce load
-        #    for canvas_id in target_configuration.get_config()["canvases_enabled"]:
-        #        self.update_canvas(canvas_id)
-        #else:  # by default, use all (2 at the moment)
+        if "canvases_enabled" in target_configuration.get_config():  # the configuration can disable some canvases to reduce load
+            for canvas_id in target_configuration.get_config()["canvases_enabled"]:
+                self.update_canvas(canvas_id)
+        else:  # by default, use all (2 at the moment)
             for canvas_id in [0, 1, 2, 3, 4, 5]:
                 self.update_canvas(canvas_id)
 
