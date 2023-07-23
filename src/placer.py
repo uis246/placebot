@@ -4,7 +4,6 @@ import time
 from io import BytesIO
 
 import requests
-from bs4 import BeautifulSoup
 from websocket import create_connection
 
 from board import Board
